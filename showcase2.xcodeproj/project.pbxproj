@@ -7,17 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09BF3BB85289811094D0AE7F /* Pods_showcase2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6253C2599A0D0281BF0D330 /* Pods_showcase2.framework */; };
 		BAB0B19E1CFF5D9D00DB7757 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B19D1CFF5D9D00DB7757 /* AppDelegate.swift */; };
 		BAB0B1A01CFF5D9D00DB7757 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */; };
 		BAB0B1A31CFF5D9D00DB7757 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A11CFF5D9D00DB7757 /* Main.storyboard */; };
 		BAB0B1A51CFF5D9D00DB7757 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A41CFF5D9D00DB7757 /* Assets.xcassets */; };
 		BAB0B1A81CFF5D9D00DB7757 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A61CFF5D9D00DB7757 /* LaunchScreen.storyboard */; };
 		BAB0B1B01CFF5E1400DB7757 /* GoogleService-Info-1.plist in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info-1.plist */; };
-		C3F85BD12AEAFA274DA12CEF /* libPods-showcase2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D800B440FB87F844FDEC87F /* libPods-showcase2.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0D800B440FB87F844FDEC87F /* libPods-showcase2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-showcase2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		744BC7561676510AC226555B /* Pods-showcase2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-showcase2.release.xcconfig"; path = "Pods/Target Support Files/Pods-showcase2/Pods-showcase2.release.xcconfig"; sourceTree = "<group>"; };
 		AF1233852270DCCA3859EFCF /* Pods-showcase2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-showcase2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-showcase2/Pods-showcase2.debug.xcconfig"; sourceTree = "<group>"; };
 		BAB0B19A1CFF5D9D00DB7757 /* showcase2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = showcase2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -28,6 +27,7 @@
 		BAB0B1A71CFF5D9D00DB7757 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BAB0B1A91CFF5D9D00DB7757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info-1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-1.plist"; sourceTree = "<group>"; };
+		F6253C2599A0D0281BF0D330 /* Pods_showcase2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_showcase2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,7 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3F85BD12AEAFA274DA12CEF /* libPods-showcase2.a in Frameworks */,
+				09BF3BB85289811094D0AE7F /* Pods_showcase2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +86,7 @@
 		EC921CED9E711412A068B273 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0D800B440FB87F844FDEC87F /* libPods-showcase2.a */,
+				F6253C2599A0D0281BF0D330 /* Pods_showcase2.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
