@@ -20,24 +20,24 @@ class DataService {
       return _REF_BASE
     }
     
-//    func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
-//        print(url)
-//        Alamofire.request(.GET, url).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error -> Void in
-//            
-//            let fetchedImage: UIImage!
-//            
-//            if error == nil {
-//                
-//                fetchedImage = UIImage(data: data!)!
-//                
-//            } else {
-//                
-//                fetchedImage = UIImage(named: "compact-camera-xxl.png")
-//                
-//            }
-//            completion(image: fetchedImage)
-//        })
-//    }
+    func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
+        print(url)
+        Alamofire.request(.GET, url).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error -> Void in
+            
+            let fetchedImage: UIImage!
+            
+            if error == nil {
+                
+                fetchedImage = UIImage(data: data!)!
+                
+            } else {
+                
+                fetchedImage = UIImage(named: "add_user.png")
+                
+            }
+            completion(image: fetchedImage)
+        })
+    }
 
     
 }
