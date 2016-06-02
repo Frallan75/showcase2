@@ -28,6 +28,7 @@ class ViewController: UIViewController {
     
             if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
                 self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                
             }
     // **
             
@@ -45,12 +46,14 @@ class ViewController: UIViewController {
                 let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
                 print("Succefully loged in with FB! \(accessToken)")
                 
-                let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
+                let credential = FIRFacebookAuthProvider.credentialWithAccessToken(accessToken)
+                
+                print(credential)
                 
                 FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
                     
                     if error != nil {
-                        print("We have a problem")
+                        print("WE have a sign in with credentials problem")
                     } else {
                         let userId = user!.displayName!
                         NSUserDefaults.standardUserDefaults().setValue(userId, forKey: KEY_UID)
