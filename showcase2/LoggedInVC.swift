@@ -13,6 +13,9 @@ class LoggedInVC: UIViewController {
 
     @IBOutlet weak var loggedInLbl: UILabel!
     
+    @IBOutlet weak var userImgView: UIImageView!
+    
+    
     var user: FIRUser!
     
     override func viewDidLoad() {
@@ -42,11 +45,20 @@ class LoggedInVC: UIViewController {
                         }
                     })
                 }
-                self.loggedInLbl.text = "Welcome \(user.displayName)"
+                self.loggedInLbl.text = "Welcome \(user.displayName!)"
             
             } else {
                 print("no user signed in yet!")
             }
         }
+    }
+    @IBAction func logOutBtnPressed(sender: UIButton!) {
+        
+        NSUserDefaults.standardUserDefaults().setValue(nil, forKey: KEY_UID)
+        
+        try! FIRAuth.auth()!.signOut()
+        
+        dismissViewControllerAnimated(true, completion: nil)
+        
     }
 }
