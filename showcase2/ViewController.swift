@@ -46,7 +46,7 @@ class ViewController: UIViewController {
                 let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
                 print("Succefully loged in with FB! \(accessToken)")
                 
-                let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
+                let credential = FIRFacebookAuthProvider.credentialWithAccessToken(accessToken)
                 
                 print(credential)
                 
