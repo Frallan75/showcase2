@@ -20,8 +20,30 @@ class LoggedInVC: UIViewController {
         
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
             if let user = user {
-                self.loggedInLbl.text = user.displayName
+                
+                print("in logged in user = user")
+                
                 self.user = FIRAuth.auth()?.currentUser
+                
+                if user.displayName == nil {
+                    
+                    print("in displayName ==")
+                    
+                    let changeRequest = user.profileChangeRequest()
+                    
+                    changeRequest.displayName = user.email
+                    
+                    changeRequest.commitChangesWithCompletion({ error in
+                        
+                        if error != nil {
+                            print("no luck")
+                        } else {
+                            print("name change success, name is now \(user.displayName)")
+                        }
+                    })
+                }
+                self.loggedInLbl.text = "Welcome \(user.displayName)"
+            
             } else {
                 print("no user signed in yet!")
             }
