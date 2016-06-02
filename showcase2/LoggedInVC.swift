@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 class LoggedInVC: UIViewController {
-
+    
     @IBOutlet weak var loggedInLbl: UILabel!
     
     @IBOutlet weak var userImgView: UIImageView!
@@ -47,17 +47,16 @@ class LoggedInVC: UIViewController {
                 self.loggedInLbl.text = "Welcome \(user.displayName!)"
                 
                 if self.user.photoURL != nil {
-                
-                let usrImgUrl = String(self.user.photoURL!)
-                
-                DataService.ds.fetchImageFromUrl(usrImgUrl, completion: { image in
-                    self.userImgView.image = image
-                })
+                    
+                    let usrImgUrl = String(self.user.photoURL!)
+                    
+                    DataService.ds.fetchImageFromUrl(usrImgUrl, completion: { image in
+                        self.userImgView.image = image
+                    })
                 } else {
                     self.userImgView.image = UIImage(named: "add_user.png")
                 }
                 
-            
             } else {
                 print("no user signed in yet!")
             }

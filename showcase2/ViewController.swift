@@ -25,11 +25,11 @@ class ViewController: UIViewController {
         override func viewDidAppear(animated: Bool) {
     
     // **  COMMENT TO UNAPPLY QUICK "ALREADY LOGGED IN WITH NSUserDefaults"
-//    
-//            if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-//                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-//                
-//            }
+    
+            if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
+                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                
+            }
     // **
             
         }
@@ -53,9 +53,7 @@ class ViewController: UIViewController {
                 FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
                     
                     if error != nil {
-//                        print(error?.localizedDescription)
-//                        print(error?.code)                                            
-                        print(error?.debugDescription)
+                        print("WE have a sign in with credentials problem")
                     } else {
                         let userId = user!.displayName!
                         NSUserDefaults.standardUserDefaults().setValue(userId, forKey: KEY_UID)
