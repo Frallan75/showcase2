@@ -13,7 +13,15 @@
 		BAB0B1A31CFF5D9D00DB7757 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A11CFF5D9D00DB7757 /* Main.storyboard */; };
 		BAB0B1A51CFF5D9D00DB7757 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A41CFF5D9D00DB7757 /* Assets.xcassets */; };
 		BAB0B1A81CFF5D9D00DB7757 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A61CFF5D9D00DB7757 /* LaunchScreen.storyboard */; };
-		BAB0B1B01CFF5E1400DB7757 /* GoogleService-Info-1.plist in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info-1.plist */; };
+		BAB0B1B01CFF5E1400DB7757 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info.plist */; };
+		BAB0B1B41CFF749800DB7757 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB0B1B11CFF749800DB7757 /* FBSDKCoreKit.framework */; };
+		BAB0B1B51CFF749800DB7757 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB0B1B21CFF749800DB7757 /* FBSDKLoginKit.framework */; };
+		BAB0B1B61CFF749800DB7757 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAB0B1B31CFF749800DB7757 /* FBSDKShareKit.framework */; };
+		BAB0B1B91CFF903600DB7757 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B1B81CFF903600DB7757 /* DataService.swift */; };
+		BAB0B1BC1CFFBF2200DB7757 /* LoggedInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B1BB1CFFBF2200DB7757 /* LoggedInVC.swift */; };
+		BAB0B1BF1CFFCAA700DB7757 /* MaterialButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B1BE1CFFCAA700DB7757 /* MaterialButton.swift */; };
+		BAB0B1C21CFFCB5800DB7757 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B1C11CFFCB5800DB7757 /* Constants.swift */; };
+		BAB0B1C41CFFD51900DB7757 /* MaterialTxtField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B1C31CFFD51900DB7757 /* MaterialTxtField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +34,15 @@
 		BAB0B1A41CFF5D9D00DB7757 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BAB0B1A71CFF5D9D00DB7757 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BAB0B1A91CFF5D9D00DB7757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info-1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-1.plist"; sourceTree = "<group>"; };
+		BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BAB0B1B11CFF749800DB7757 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		BAB0B1B21CFF749800DB7757 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		BAB0B1B31CFF749800DB7757 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		BAB0B1B81CFF903600DB7757 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		BAB0B1BB1CFFBF2200DB7757 /* LoggedInVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggedInVC.swift; sourceTree = "<group>"; };
+		BAB0B1BE1CFFCAA700DB7757 /* MaterialButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialButton.swift; sourceTree = "<group>"; };
+		BAB0B1C11CFFCB5800DB7757 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		BAB0B1C31CFFD51900DB7757 /* MaterialTxtField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialTxtField.swift; sourceTree = "<group>"; };
 		F6253C2599A0D0281BF0D330 /* Pods_showcase2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_showcase2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -35,7 +51,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAB0B1B61CFF749800DB7757 /* FBSDKShareKit.framework in Frameworks */,
 				09BF3BB85289811094D0AE7F /* Pods_showcase2.framework in Frameworks */,
+				BAB0B1B41CFF749800DB7757 /* FBSDKCoreKit.framework in Frameworks */,
+				BAB0B1B51CFF749800DB7757 /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,20 +91,60 @@
 		BAB0B19C1CFF5D9D00DB7757 /* showcase2 */ = {
 			isa = PBXGroup;
 			children = (
+				BAB0B1C01CFFCB4300DB7757 /* Constants */,
+				BAB0B1BD1CFFCA8700DB7757 /* View */,
+				BAB0B1BA1CFFBEF500DB7757 /* Controllers */,
+				BAB0B1B71CFF902000DB7757 /* Services */,
+				BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info.plist */,
 				BAB0B19D1CFF5D9D00DB7757 /* AppDelegate.swift */,
-				BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */,
-				BAB0B1A11CFF5D9D00DB7757 /* Main.storyboard */,
 				BAB0B1A41CFF5D9D00DB7757 /* Assets.xcassets */,
 				BAB0B1A61CFF5D9D00DB7757 /* LaunchScreen.storyboard */,
-				BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info-1.plist */,
 				BAB0B1A91CFF5D9D00DB7757 /* Info.plist */,
 			);
 			path = showcase2;
 			sourceTree = "<group>";
 		};
+		BAB0B1B71CFF902000DB7757 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BAB0B1B81CFF903600DB7757 /* DataService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		BAB0B1BA1CFFBEF500DB7757 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BAB0B1A11CFF5D9D00DB7757 /* Main.storyboard */,
+				BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */,
+				BAB0B1BB1CFFBF2200DB7757 /* LoggedInVC.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		BAB0B1BD1CFFCA8700DB7757 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BAB0B1BE1CFFCAA700DB7757 /* MaterialButton.swift */,
+				BAB0B1C31CFFD51900DB7757 /* MaterialTxtField.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		BAB0B1C01CFFCB4300DB7757 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				BAB0B1C11CFFCB5800DB7757 /* Constants.swift */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
 		EC921CED9E711412A068B273 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BAB0B1B11CFF749800DB7757 /* FBSDKCoreKit.framework */,
+				BAB0B1B21CFF749800DB7757 /* FBSDKLoginKit.framework */,
+				BAB0B1B31CFF749800DB7757 /* FBSDKShareKit.framework */,
 				F6253C2599A0D0281BF0D330 /* Pods_showcase2.framework */,
 			);
 			name = Frameworks;
@@ -153,7 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAB0B1A81CFF5D9D00DB7757 /* LaunchScreen.storyboard in Resources */,
-				BAB0B1B01CFF5E1400DB7757 /* GoogleService-Info-1.plist in Resources */,
+				BAB0B1B01CFF5E1400DB7757 /* GoogleService-Info.plist in Resources */,
 				BAB0B1A51CFF5D9D00DB7757 /* Assets.xcassets in Resources */,
 				BAB0B1A31CFF5D9D00DB7757 /* Main.storyboard in Resources */,
 			);
@@ -214,8 +273,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAB0B1B91CFF903600DB7757 /* DataService.swift in Sources */,
+				BAB0B1C41CFFD51900DB7757 /* MaterialTxtField.swift in Sources */,
+				BAB0B1BC1CFFBF2200DB7757 /* LoggedInVC.swift in Sources */,
 				BAB0B1A01CFF5D9D00DB7757 /* ViewController.swift in Sources */,
 				BAB0B19E1CFF5D9D00DB7757 /* AppDelegate.swift in Sources */,
+				BAB0B1BF1CFFCAA700DB7757 /* MaterialButton.swift in Sources */,
+				BAB0B1C21CFFCB5800DB7757 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +395,11 @@
 			baseConfigurationReference = AF1233852270DCCA3859EFCF /* Pods-showcase2.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = showcase2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = francisco.claret.showcase2;
@@ -343,6 +412,11 @@
 			baseConfigurationReference = 744BC7561676510AC226555B /* Pods-showcase2.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = showcase2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = francisco.claret.showcase2;
