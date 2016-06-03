@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+import Firebase
 
 let SHADOW_COLOR = UIColor(red: 157/255, green: 157/255, blue: 157/255, alpha: 0.5)
 let BORDER_COLOR = UIColor(red: 157/255, green: 157/255, blue: 157/255, alpha: 0.1)
@@ -24,3 +24,5 @@ let SEGUE_TO_LOGGED_IN = "setupToLoggedIn"
 //STATUS CODES
 
 let STATUS_ACCOUNT_NONEXIST = -8
+
+

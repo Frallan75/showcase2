@@ -13,51 +13,59 @@ import Firebase
 
 class ViewController: UIViewController {
     
-    
     @IBOutlet weak var usernameTxtField: MaterialTxtField!
     @IBOutlet weak var passwordTxtField: MaterialTxtField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(DataService.ds.FB_BASE_REF)
     }
     
-        override func viewDidAppear(animated: Bool) {
-    
-    // **  COMMENT TO UNAPPLY QUICK "ALREADY LOGGED IN WITH NSUserDefaults"
-    
-            if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-                self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-                
-            }
-    // **
+    override func viewDidAppear(animated: Bool) {
+        
+        // **  COMMENT TO UNAPPLY QUICK "ALREADY LOGGED IN WITH NSUserDefaults"
+        
+        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
+            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
             
         }
+        // **
+        
+    }
     
     @IBAction func fbBtnPressed(sender: UIButton!) {
         
         let facebookLogin = FBSDKLoginManager()
+        var userToCreate = Dictionary<String, AnyObject>()
         
         facebookLogin.logInWithReadPermissions(["public_profile", "email", "user_friends"], fromViewController: self) { fbLoginResult, fbLoginError in
             
             if fbLoginError != nil {
+            
                 print("Facebook Error at login \(fbLoginError)")
+            
             } else {
+                
                 let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
-                print("Succefully loged in with FB! \(accessToken)")
-                
                 let credential = FIRFacebookAuthProvider.credentialWithAccessToken(accessToken)
-                
-                print(credential)
                 
                 FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
                     
                     if error != nil {
-                        print("WE have a sign in with credentials problem")
-                    } else {
-                        let userId = user!.displayName!
-                        NSUserDefaults.standardUserDefaults().setValue(userId, forKey: KEY_UID)
                         
+                        print("WE have a sign in with credentials problem")
+                        
+                    } else {
+                        
+                        userToCreate["profileImgUrl"] = user!.photoURL!.absoluteString
+                        userToCreate["provider"] = credential.provider
+                        userToCreate["email"] = user!.email
+                        userToCreate["name"] = user!.displayName
+                        
+                        DataService.ds.createFIRUser(user!.uid, user: userToCreate)
+                        
+                        NSUserDefaults.standardUserDefaults().setValue(user!.uid, forKey: KEY_UID)
                         self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
                     }
                 }
@@ -80,22 +88,28 @@ class ViewController: UIViewController {
                     if let errorDesc = FIRAuthErrorCode(rawValue: error.code) {
                         
                         switch errorDesc {
-                        
+                            
                         case.ErrorCodeInvalidEmail:
                             self.displayLoginAlert("Invalid email format", error: "")
                             
                         case .ErrorCodeWrongPassword:
                             self.displayLoginAlert("Wrong password", error: "")
+                        
                         case .ErrorCodeUserNotFound:
                             self.displayCreateNewUserAlert("create user?", msg: "Are you sure you want to create a new user with email: \(email)?", user: email, pwd: pwd)
+                        
                         default:
                             self.displayLoginAlert("Uknown error", error: "")
                         }
                     }
                     
                 } else if let user = user {
-                    
-                    self.loginFinalStep(user)
+                
+                    self.createUserDictionaryEmailLogin(user)
+                
+                } else {
+                 
+                    print("Error in email user creation!")
                 }
             })
             
@@ -109,13 +123,11 @@ class ViewController: UIViewController {
         FIRAuth.auth()?.createUserWithEmail(email, password: pwd, completion: { (user: FIRUser?, error:NSError?) in
             
             if let error = error {
-                print("error desc")
-                print(error.localizedDescription)
-                
+ 
                 if let errorDesc = FIRAuthErrorCode(rawValue: error.code) {
                     
                     switch errorDesc {
-                    
+                        
                     case .ErrorCodeInvalidEmail:
                         self.displayLoginAlert("Login Error!", error: "Invalid Email format")
                     case .ErrorCodeWeakPassword:
@@ -126,9 +138,28 @@ class ViewController: UIViewController {
                 }
             } else if let user = user {
                 
-                self.loginFinalStep(user)
+                self.createUserDictionaryEmailLogin(user)
+            
+            } else {
+                
+                print("Error in email user creation!")
             }
         })
+    }
+    
+    func createUserDictionaryEmailLogin(user: FIRUser) {
+        
+        var userToCreate = Dictionary<String, AnyObject>()
+        
+        userToCreate["provider"] = "email"
+        userToCreate["email"] = user.email
+        
+        print("IN CREATING USER FIR 22")
+        
+        DataService.ds.createFIRUser(user.uid, user: userToCreate)
+        
+        self.loginFinalStep(user)
+
     }
     
     func loginFinalStep(user: FIRUser) {
@@ -152,14 +183,12 @@ class ViewController: UIViewController {
     func displayCreateNewUserAlert(title: String, msg: String, user: String, pwd: String) {
         let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default){ action in
-             self.createNewUser(user, pwd: pwd)
+            self.createNewUser(user, pwd: pwd)
         }
         
         let discardAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: clearForm)
-
         alert.addAction(action)
         alert.addAction(discardAction)
-        
         presentViewController(alert, animated: true, completion: nil)
     }
     

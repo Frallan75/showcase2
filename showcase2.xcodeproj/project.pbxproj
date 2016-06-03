@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		09BF3BB85289811094D0AE7F /* Pods_showcase2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6253C2599A0D0281BF0D330 /* Pods_showcase2.framework */; };
+		BA04585E1D01141300112ABC /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA04585D1D01141300112ABC /* AssetCell.swift */; };
+		BA0458611D01159A00112ABC /* AssetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0458601D01159A00112ABC /* AssetModel.swift */; };
+		BA8EB6FB1D015F6C00D60807 /* AddAssetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB6FA1D015F6C00D60807 /* AddAssetVC.swift */; };
+		BA8EB6FD1D022F5A00D60807 /* ManageAssetsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB6FC1D022F5A00D60807 /* ManageAssetsVC.swift */; };
 		BAB0B19E1CFF5D9D00DB7757 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B19D1CFF5D9D00DB7757 /* AppDelegate.swift */; };
 		BAB0B1A01CFF5D9D00DB7757 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */; };
 		BAB0B1A31CFF5D9D00DB7757 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A11CFF5D9D00DB7757 /* Main.storyboard */; };
@@ -27,6 +31,10 @@
 /* Begin PBXFileReference section */
 		744BC7561676510AC226555B /* Pods-showcase2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-showcase2.release.xcconfig"; path = "Pods/Target Support Files/Pods-showcase2/Pods-showcase2.release.xcconfig"; sourceTree = "<group>"; };
 		AF1233852270DCCA3859EFCF /* Pods-showcase2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-showcase2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-showcase2/Pods-showcase2.debug.xcconfig"; sourceTree = "<group>"; };
+		BA04585D1D01141300112ABC /* AssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
+		BA0458601D01159A00112ABC /* AssetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetModel.swift; sourceTree = "<group>"; };
+		BA8EB6FA1D015F6C00D60807 /* AddAssetVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAssetVC.swift; sourceTree = "<group>"; };
+		BA8EB6FC1D022F5A00D60807 /* ManageAssetsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAssetsVC.swift; sourceTree = "<group>"; };
 		BAB0B19A1CFF5D9D00DB7757 /* showcase2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = showcase2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAB0B19D1CFF5D9D00DB7757 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -70,6 +78,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		BA04585F1D01157400112ABC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BA0458601D01159A00112ABC /* AssetModel.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		BAB0B1911CFF5D9D00DB7757 = {
 			isa = PBXGroup;
 			children = (
@@ -91,9 +107,10 @@
 		BAB0B19C1CFF5D9D00DB7757 /* showcase2 */ = {
 			isa = PBXGroup;
 			children = (
+				BAB0B1BA1CFFBEF500DB7757 /* Controllers */,
+				BA04585F1D01157400112ABC /* Model */,
 				BAB0B1C01CFFCB4300DB7757 /* Constants */,
 				BAB0B1BD1CFFCA8700DB7757 /* View */,
-				BAB0B1BA1CFFBEF500DB7757 /* Controllers */,
 				BAB0B1B71CFF902000DB7757 /* Services */,
 				BAB0B1AF1CFF5E1400DB7757 /* GoogleService-Info.plist */,
 				BAB0B19D1CFF5D9D00DB7757 /* AppDelegate.swift */,
@@ -118,6 +135,8 @@
 				BAB0B1A11CFF5D9D00DB7757 /* Main.storyboard */,
 				BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */,
 				BAB0B1BB1CFFBF2200DB7757 /* LoggedInVC.swift */,
+				BA8EB6FA1D015F6C00D60807 /* AddAssetVC.swift */,
+				BA8EB6FC1D022F5A00D60807 /* ManageAssetsVC.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -127,6 +146,7 @@
 			children = (
 				BAB0B1BE1CFFCAA700DB7757 /* MaterialButton.swift */,
 				BAB0B1C31CFFD51900DB7757 /* MaterialTxtField.swift */,
+				BA04585D1D01141300112ABC /* AssetCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -275,9 +295,13 @@
 			files = (
 				BAB0B1B91CFF903600DB7757 /* DataService.swift in Sources */,
 				BAB0B1C41CFFD51900DB7757 /* MaterialTxtField.swift in Sources */,
+				BA8EB6FD1D022F5A00D60807 /* ManageAssetsVC.swift in Sources */,
+				BA04585E1D01141300112ABC /* AssetCell.swift in Sources */,
 				BAB0B1BC1CFFBF2200DB7757 /* LoggedInVC.swift in Sources */,
 				BAB0B1A01CFF5D9D00DB7757 /* ViewController.swift in Sources */,
+				BA8EB6FB1D015F6C00D60807 /* AddAssetVC.swift in Sources */,
 				BAB0B19E1CFF5D9D00DB7757 /* AppDelegate.swift in Sources */,
+				BA0458611D01159A00112ABC /* AssetModel.swift in Sources */,
 				BAB0B1BF1CFFCAA700DB7757 /* MaterialButton.swift in Sources */,
 				BAB0B1C21CFFCB5800DB7757 /* Constants.swift in Sources */,
 			);

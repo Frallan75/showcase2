@@ -10,9 +10,15 @@ import Foundation
 import Firebase
 import Alamofire
 
+let FB_REF = FIRDatabase.database().reference()
+
 class DataService {
     
     static let ds = DataService()
+    
+    let FB_BASE_REF = FB_REF
+    let FB_ASSET_REF = FB_REF.child("assets")
+    let FB_USER_REF = FB_REF.child("users")
     
     func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
         print(url)
@@ -32,6 +38,11 @@ class DataService {
             completion(image: fetchedImage)
         })
     }
+    
+    func createFIRUser(uid: String, user: Dictionary<String, AnyObject>) {
+        FB_USER_REF.child(uid).updateChildValues(user)
+    }
+    
 
     
 }
