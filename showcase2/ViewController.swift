@@ -154,8 +154,6 @@ class ViewController: UIViewController {
         userToCreate["provider"] = "email"
         userToCreate["email"] = user.email
         
-        print("IN CREATING USER FIR 22")
-        
         DataService.ds.createFIRUser(user.uid, user: userToCreate)
         
         self.loginFinalStep(user)

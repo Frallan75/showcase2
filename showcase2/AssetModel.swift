@@ -25,7 +25,7 @@ class Asset {
     init(assetKey: String, assetDict: Dictionary<String, AnyObject>) {
         
         self.assetKey = assetKey
-        self.assetRef = DataService.ds.FB_ASSET_REF.child(self.assetKey)
+        self.assetRef = DataService.ds.FB_ASSETS_REF.child(self.assetKey)
         
         if let type = assetDict["type"] as? String {
             self.type = type
@@ -34,7 +34,7 @@ class Asset {
         if let owner = assetDict["owner"] as? String {
             self.owner = owner
         }
-        
+
         if let make = assetDict["make"] as? String {
             self.make = make
         }

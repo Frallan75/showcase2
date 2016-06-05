@@ -17,8 +17,9 @@ class DataService {
     static let ds = DataService()
     
     let FB_BASE_REF = FB_REF
-    let FB_ASSET_REF = FB_REF.child("assets")
-    let FB_USER_REF = FB_REF.child("users")
+    let FB_ASSETS_REF = FB_REF.child("assets")
+    let FB_USERS_REF = FB_REF.child("users")
+    let FB_TYPES_REF = FB_REF.child("types")
     
     func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
         print(url)
@@ -40,10 +41,30 @@ class DataService {
     }
     
     func createFIRUser(uid: String, user: Dictionary<String, AnyObject>) {
-        FB_USER_REF.child(uid).updateChildValues(user)
+        FB_USERS_REF.child(uid).updateChildValues(user)
     }
     
-
+    func createNewType(typeName: String) {
+        
+        let key = FB_TYPES_REF.childByAutoId().key
+        var typeDict = Dictionary<String, AnyObject>()
+        
+        typeDict["uid"] = key
+        typeDict["name"] = typeName
+    
+        FB_TYPES_REF.child(key).updateChildValues(typeDict)
+    }
+    
+    func createNewAsset(assetDict: Dictionary<String, AnyObject>) {
+        
+        let newKey = FB_ASSETS_REF.childByAutoId().key
+        var assetDictUpdatedWid = assetDict
+        assetDictUpdatedWid["uid"] = newKey
+        FB_ASSETS_REF.child(newKey).updateChildValues(assetDictUpdatedWid)
+        
+    }
+    
+    
     
 }
 

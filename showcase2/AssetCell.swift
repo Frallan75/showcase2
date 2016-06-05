@@ -13,7 +13,7 @@ class AssetCell: UITableViewCell {
     
     @IBOutlet weak var assetImgView: UIView!
     @IBOutlet weak var assetTypeLbl: UILabel!
-    @IBOutlet weak var assetNameLbl: UILabel!
+    
     @IBOutlet weak var assetLifeLeftLbl: UILabel!
     @IBOutlet weak var assetStatusView: UIView!
     
@@ -28,6 +28,9 @@ class AssetCell: UITableViewCell {
         assetImgView.clipsToBounds = true
     }
 
-    
+    func configureAsset(asset: Asset) {
+        
+            
+    }
 
 }

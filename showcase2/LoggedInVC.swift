@@ -27,7 +27,7 @@ class LoggedInVC: UIViewController {
         
         //LOOK FOR ASSETS TO FILL INTO ASSET ARRAY
         
-        DataService.ds.FB_ASSET_REF.observeEventType(.Value, withBlock:  { snapshot in
+        DataService.ds.FB_ASSETS_REF.observeEventType(.Value, withBlock:  { snapshot in
             
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 

@@ -11,7 +11,10 @@
 		BA04585E1D01141300112ABC /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA04585D1D01141300112ABC /* AssetCell.swift */; };
 		BA0458611D01159A00112ABC /* AssetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0458601D01159A00112ABC /* AssetModel.swift */; };
 		BA8EB6FB1D015F6C00D60807 /* AddAssetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB6FA1D015F6C00D60807 /* AddAssetVC.swift */; };
-		BA8EB6FD1D022F5A00D60807 /* ManageAssetsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB6FC1D022F5A00D60807 /* ManageAssetsVC.swift */; };
+		BA8EB7011D0232D300D60807 /* ManageAssetTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB7001D0232D300D60807 /* ManageAssetTypeVC.swift */; };
+		BA8EB7031D02370800D60807 /* TypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB7021D02370800D60807 /* TypeCell.swift */; };
+		BA8EB7051D0238E200D60807 /* TypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB7041D0238E200D60807 /* TypeModel.swift */; };
+		BA8EB70B1D03F40A00D60807 /* OwnerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB70A1D03F40A00D60807 /* OwnerModel.swift */; };
 		BAB0B19E1CFF5D9D00DB7757 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B19D1CFF5D9D00DB7757 /* AppDelegate.swift */; };
 		BAB0B1A01CFF5D9D00DB7757 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */; };
 		BAB0B1A31CFF5D9D00DB7757 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAB0B1A11CFF5D9D00DB7757 /* Main.storyboard */; };
@@ -34,7 +37,10 @@
 		BA04585D1D01141300112ABC /* AssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
 		BA0458601D01159A00112ABC /* AssetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetModel.swift; sourceTree = "<group>"; };
 		BA8EB6FA1D015F6C00D60807 /* AddAssetVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAssetVC.swift; sourceTree = "<group>"; };
-		BA8EB6FC1D022F5A00D60807 /* ManageAssetsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAssetsVC.swift; sourceTree = "<group>"; };
+		BA8EB7001D0232D300D60807 /* ManageAssetTypeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAssetTypeVC.swift; sourceTree = "<group>"; };
+		BA8EB7021D02370800D60807 /* TypeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeCell.swift; sourceTree = "<group>"; };
+		BA8EB7041D0238E200D60807 /* TypeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeModel.swift; sourceTree = "<group>"; };
+		BA8EB70A1D03F40A00D60807 /* OwnerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnerModel.swift; sourceTree = "<group>"; };
 		BAB0B19A1CFF5D9D00DB7757 /* showcase2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = showcase2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAB0B19D1CFF5D9D00DB7757 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				BA0458601D01159A00112ABC /* AssetModel.swift */,
+				BA8EB7041D0238E200D60807 /* TypeModel.swift */,
+				BA8EB70A1D03F40A00D60807 /* OwnerModel.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -136,7 +144,7 @@
 				BAB0B19F1CFF5D9D00DB7757 /* ViewController.swift */,
 				BAB0B1BB1CFFBF2200DB7757 /* LoggedInVC.swift */,
 				BA8EB6FA1D015F6C00D60807 /* AddAssetVC.swift */,
-				BA8EB6FC1D022F5A00D60807 /* ManageAssetsVC.swift */,
+				BA8EB7001D0232D300D60807 /* ManageAssetTypeVC.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -147,6 +155,7 @@
 				BAB0B1BE1CFFCAA700DB7757 /* MaterialButton.swift */,
 				BAB0B1C31CFFD51900DB7757 /* MaterialTxtField.swift */,
 				BA04585D1D01141300112ABC /* AssetCell.swift */,
+				BA8EB7021D02370800D60807 /* TypeCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -294,12 +303,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAB0B1B91CFF903600DB7757 /* DataService.swift in Sources */,
+				BA8EB70B1D03F40A00D60807 /* OwnerModel.swift in Sources */,
 				BAB0B1C41CFFD51900DB7757 /* MaterialTxtField.swift in Sources */,
-				BA8EB6FD1D022F5A00D60807 /* ManageAssetsVC.swift in Sources */,
 				BA04585E1D01141300112ABC /* AssetCell.swift in Sources */,
+				BA8EB7011D0232D300D60807 /* ManageAssetTypeVC.swift in Sources */,
 				BAB0B1BC1CFFBF2200DB7757 /* LoggedInVC.swift in Sources */,
 				BAB0B1A01CFF5D9D00DB7757 /* ViewController.swift in Sources */,
 				BA8EB6FB1D015F6C00D60807 /* AddAssetVC.swift in Sources */,
+				BA8EB7051D0238E200D60807 /* TypeModel.swift in Sources */,
+				BA8EB7031D02370800D60807 /* TypeCell.swift in Sources */,
 				BAB0B19E1CFF5D9D00DB7757 /* AppDelegate.swift in Sources */,
 				BA0458611D01159A00112ABC /* AssetModel.swift in Sources */,
 				BAB0B1BF1CFFCAA700DB7757 /* MaterialButton.swift in Sources */,
