@@ -42,9 +42,9 @@ class ViewController: UIViewController {
         facebookLogin.logInWithReadPermissions(["public_profile", "email", "user_friends"], fromViewController: self) { fbLoginResult, fbLoginError in
             
             if fbLoginError != nil {
-            
+                
                 print("Facebook Error at login \(fbLoginError)")
-            
+                
             } else {
                 
                 let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
@@ -94,21 +94,21 @@ class ViewController: UIViewController {
                             
                         case .ErrorCodeWrongPassword:
                             self.displayLoginAlert("Wrong password", error: "")
-                        
+                            
                         case .ErrorCodeUserNotFound:
                             self.displayCreateNewUserAlert("create user?", msg: "Are you sure you want to create a new user with email: \(email)?", user: email, pwd: pwd)
-                        
+                            
                         default:
                             self.displayLoginAlert("Uknown error", error: "")
                         }
                     }
                     
                 } else if let user = user {
-                
+                    
                     self.createUserDictionaryEmailLogin(user)
-                
+                    
                 } else {
-                 
+                    
                     print("Error in email user creation!")
                 }
             })
@@ -123,7 +123,7 @@ class ViewController: UIViewController {
         FIRAuth.auth()?.createUserWithEmail(email, password: pwd, completion: { (user: FIRUser?, error:NSError?) in
             
             if let error = error {
- 
+                
                 if let errorDesc = FIRAuthErrorCode(rawValue: error.code) {
                     
                     switch errorDesc {
@@ -139,7 +139,7 @@ class ViewController: UIViewController {
             } else if let user = user {
                 
                 self.createUserDictionaryEmailLogin(user)
-            
+                
             } else {
                 
                 print("Error in email user creation!")
@@ -157,7 +157,7 @@ class ViewController: UIViewController {
         DataService.ds.createFIRUser(user.uid, user: userToCreate)
         
         self.loginFinalStep(user)
-
+        
     }
     
     func loginFinalStep(user: FIRUser) {

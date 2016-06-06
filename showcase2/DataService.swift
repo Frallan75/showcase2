@@ -21,25 +21,6 @@ class DataService {
     let FB_USERS_REF = FB_REF.child("users")
     let FB_TYPES_REF = FB_REF.child("types")
     
-    func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
-        print(url)
-        Alamofire.request(.GET, url).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error -> Void in
-            
-            let fetchedImage: UIImage!
-            
-            if error == nil {
-                
-                fetchedImage = UIImage(data: data!)!
-                
-            } else {
-                
-                fetchedImage = UIImage(named: "add_user.png")
-                
-            }
-            completion(image: fetchedImage)
-        })
-    }
-    
     func createFIRUser(uid: String, user: Dictionary<String, AnyObject>) {
         FB_USERS_REF.child(uid).updateChildValues(user)
     }
@@ -51,7 +32,7 @@ class DataService {
         
         typeDict["uid"] = key
         typeDict["name"] = typeName
-    
+        
         FB_TYPES_REF.child(key).updateChildValues(typeDict)
     }
     
@@ -61,10 +42,34 @@ class DataService {
         var assetDictUpdatedWid = assetDict
         assetDictUpdatedWid["uid"] = newKey
         FB_ASSETS_REF.child(newKey).updateChildValues(assetDictUpdatedWid)
-        
+        print("just before asset")
+        if let owner = assetDict["owner"] as? String {
+                print("in asset create")
+            var assetDictToAdd = Dictionary<String, AnyObject>()
+            assetDictToAdd[newKey] = newKey
+            let newRef = FB_USERS_REF.child(owner)
+            newRef.child("assets").updateChildValues(assetDictToAdd)
+        }
     }
     
+        func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
+            
+            Alamofire.request(.GET, url).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error -> Void in
     
+                let fetchedImage: UIImage!
     
+                if error == nil {
+    
+                    fetchedImage = UIImage(data: data!)!
+    
+                } else {
+    
+                    fetchedImage = UIImage(named: "add_user.png")
+    
+                }
+                completion(image: fetchedImage)
+            })
+        }
+
 }
 

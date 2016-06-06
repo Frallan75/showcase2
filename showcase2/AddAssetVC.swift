@@ -11,12 +11,14 @@ import Firebase
 import Alamofire
 
 class AddAssetVC: UIViewController {
-
+    
     @IBOutlet weak var ownerPickerView: UIPickerView!
     @IBOutlet weak var typePickerView: UIPickerView!
     @IBOutlet weak var makeTF: UITextField!
     @IBOutlet weak var modelTF: UITextField!
     @IBOutlet weak var estLifeLeftTF: UITextField!
+    
+    @IBOutlet weak var BottomStackConstraint: NSLayoutConstraint!
     
     var typePickerArray: [Type] = []
     var ownerPickerArray: [Owner] = []
@@ -25,7 +27,7 @@ class AddAssetVC: UIViewController {
     
     var typeChosen: String!
     var ownerChosen: String!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,7 +36,7 @@ class AddAssetVC: UIViewController {
         ownerPickerView.delegate = self
         ownerPickerView.dataSource = self
         
-        }
+    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -57,7 +59,6 @@ class AddAssetVC: UIViewController {
                 }
             }
             self.typePickerView.reloadAllComponents()
-            print(self.typePickerArray)
         })
         
         // Load users into ownersArray
@@ -70,8 +71,8 @@ class AddAssetVC: UIViewController {
                 
                 for snap in snapshots {
                     
-                    if let ownerDict = snap.value as? Dictionary<String, AnyObject> {
-                        
+                    if var ownerDict = snap.value as? Dictionary<String, AnyObject> {
+                        ownerDict["ownerUid"] = snap.key
                         let ownerToStorPickerArray = Owner(uid: snap.key, ownerDict: ownerDict)
                         self.ownerPickerArray.append(ownerToStorPickerArray)
                     }
@@ -79,9 +80,7 @@ class AddAssetVC: UIViewController {
                 
             }
             self.ownerPickerView.reloadAllComponents()
-            print(self.ownerPickerArray)
         })
-
     }
     
     @IBAction func pickOwnerBtnPressed(sender: UIButton) {
@@ -91,15 +90,13 @@ class AddAssetVC: UIViewController {
     }
     
     @IBAction func saveButtonPressed(sender: UIButton!) {
-    
+        
         if let make = makeTF.text where make != "", let model = modelTF.text where model != "", let estLifeLeft = estLifeLeftTF.text where estLifeLeftTF != "" {
             
             var assetDict = Dictionary<String, AnyObject>()
-        
-            assetDict["type"] = self.typeChosen
-            assetDict["owner"] = FIRAuth.auth()?.currentUser?.email!
-            print("1")
-            print(assetDict["owner"])
+            
+            assetDict["typeUid"] = self.typeChosen
+            assetDict["owner"] = self.ownerChosen
             
             assetDict["make"] = make
             assetDict["model"] = model
@@ -111,21 +108,17 @@ class AddAssetVC: UIViewController {
             DataService.ds.createNewAsset(assetDict)
             
         } else {
+            
+            //XXXXXX Implement Alerts here XXXXX//
             print("Alert, all fields are not filled!")
         }
     }
 }
 
 extension AddAssetVC: UIPickerViewDataSource,UIPickerViewDelegate {
-
+    
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        if typePickerView == pickerView {
-            return 1
-        } else if ownerPickerView == pickerView {
-            return 1
-        } else {
-            return 1
-        }
+        return 1
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -144,7 +137,12 @@ extension AddAssetVC: UIPickerViewDataSource,UIPickerViewDelegate {
         if typePickerView == pickerView {
             return self.typePickerArray[row].name
         } else if ownerPickerView == pickerView {
-            return self.ownerPickerArray[row].email
+            
+            if self.ownerPickerArray[row].name != nil {
+                return self.ownerPickerArray[row].name
+            } else {
+                return self.ownerPickerArray[row].email
+            }
         } else {
             return "N/A"
         }
@@ -155,7 +153,7 @@ extension AddAssetVC: UIPickerViewDataSource,UIPickerViewDelegate {
         if typePickerView == pickerView {
             self.typeChosen = self.typePickerArray[row].typeUid
         } else if ownerPickerView == pickerView {
-            self.ownerChosen = self.ownerPickerArray[row].uid
+            self.ownerChosen = self.ownerPickerArray[row].ownerUid
         }
     }
 }

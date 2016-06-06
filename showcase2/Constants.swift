@@ -21,8 +21,4 @@ let SEGUE_LOGGED_IN = "loggedIn"
 let SEGUE_SETUP_USER = "setupUser"
 let SEGUE_TO_LOGGED_IN = "setupToLoggedIn"
 
-//STATUS CODES
-
-let STATUS_ACCOUNT_NONEXIST = -8
-
 

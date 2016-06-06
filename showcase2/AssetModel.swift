@@ -11,13 +11,13 @@ import Firebase
 
 class Asset {
     
-    var type: String!
+    var typeUid: String!
     var owner: String!
     var make: String!
     var model: String!
-    var estLifeLeft: Int!
+    var estLifeLeft: String!
     var purchaseDate: NSDate!
-    var imageUrl: String!
+    var assetImgUrl: String!
     var assetCode: String!
     var assetKey: String!
     var assetRef: FIRDatabaseReference!
@@ -27,8 +27,8 @@ class Asset {
         self.assetKey = assetKey
         self.assetRef = DataService.ds.FB_ASSETS_REF.child(self.assetKey)
         
-        if let type = assetDict["type"] as? String {
-            self.type = type
+        if let typeUid = assetDict["typeUid"] as? String {
+            self.typeUid = typeUid
         }
         
         if let owner = assetDict["owner"] as? String {
@@ -43,7 +43,7 @@ class Asset {
             self.model = model
         }
         
-        if let estLifeLeft = assetDict["estLifeLeft"] as? Int {
+        if let estLifeLeft = assetDict["estLifeLeft"] as? String {
             self.estLifeLeft = estLifeLeft
         }
         
@@ -51,15 +51,13 @@ class Asset {
             self.purchaseDate = purchaseDate
         }
         
-        if let imageUrl = assetDict["imgageUrl"] as? String {
-            self.imageUrl = imageUrl
+        if let assetImgUrl = assetDict["assetImgUrl"] as? String {
+            self.assetImgUrl = assetImgUrl
         }
         
         if let assetCode = assetDict["assetCode"] as? String {
             self.assetCode = assetCode
         }
-        
     }
-    
 }
 

@@ -12,13 +12,13 @@ import UIKit
 class Owner {
     
     var name: String!
-    var uid: String!
+    var ownerUid: String!
     var email: String!
     var provider: String!
     
     init(uid: String, ownerDict: Dictionary<String, AnyObject>) {
         
-        self.uid = uid
+        self.ownerUid = uid
         
         if let name = ownerDict["name"] as? String {
             self.name = name
@@ -30,11 +30,6 @@ class Owner {
         
         if let provider = ownerDict["provider"] as? String {
             self.provider = provider
-        }
-        
-        
-        
-        
-        
+        }  
     }
 }

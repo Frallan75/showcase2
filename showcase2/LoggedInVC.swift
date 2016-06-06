@@ -11,8 +11,10 @@ import Firebase
 
 class LoggedInVC: UIViewController {
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var loggedInLbl: UILabel!
     @IBOutlet weak var userImgView: UIImageView!
+    @IBOutlet weak var numAssetCurrUserLbl: UILabel!
     
     var user: FIRUser!
     
@@ -23,11 +25,14 @@ class LoggedInVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("USER USER USER USER USER \(FIRAuth.auth()!.currentUser!.uid)")
+        tableView.delegate = self
+        tableView.dataSource = self
         
         //LOOK FOR ASSETS TO FILL INTO ASSET ARRAY
         
         DataService.ds.FB_ASSETS_REF.observeEventType(.Value, withBlock:  { snapshot in
+            
+            self.assetArray = []
             
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot] {
                 
@@ -41,16 +46,18 @@ class LoggedInVC: UIViewController {
                     }
                 }
             }
+            self.tableView.reloadData()
         })
         
         //USER INFO
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
+            
             if let user = user {
                 
                 self.user = FIRAuth.auth()?.currentUser
                 
                 if user.displayName == nil {
-                
+                    
                     let changeRequest = user.profileChangeRequest()
                     
                     changeRequest.displayName = user.email
@@ -58,15 +65,27 @@ class LoggedInVC: UIViewController {
                     changeRequest.commitChangesWithCompletion({ error in
                         
                         if error != nil {
+                            //** Implement alert here ** //
                             print("Couldn't change user name")
                         } else {
                             print("name change success, name is now \(user.displayName)")
                         }
                     })
                 }
-                self.loggedInLbl.text = "Welcome \(user.displayName) \(self.assetArray.count)"
+                self.loggedInLbl.text = "\(user.displayName!)"
                 
-                if self.user.photoURL != nil {
+                let refCurrUserAssets = DataService.ds.FB_USERS_REF.child(user.uid).child("assets")
+                
+                refCurrUserAssets.observeEventType(FIRDataEventType.Value, withBlock: { snapshot in
+                    
+                    if snapshot.childrenCount == 0 {
+                        self.numAssetCurrUserLbl.text = "0"
+                    } else {
+                        self.numAssetCurrUserLbl.text = "\(snapshot.childrenCount)"
+                    }
+                })
+                
+                    if self.user.photoURL != nil {
                     
                     let usrImgUrl = String(self.user.photoURL!)
                     
@@ -92,5 +111,34 @@ class LoggedInVC: UIViewController {
         try! FIRAuth.auth()!.signOut()
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+}
+
+extension LoggedInVC: UITableViewDataSource, UITableViewDelegate {
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return assetArray.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let asset = assetArray[indexPath.row]
+        
+        if let cell = tableView.dequeueReusableCellWithIdentifier("assetCell") as? AssetCell {
+            
+            cell.configureAsset(asset)
+            
+            return cell
+            
+        }
+        
+        return UITableViewCell()
+    }
+    
+    
     
 }

@@ -7,24 +7,18 @@
 //
 
 import UIKit
+import Foundation
 
 class TypeCell: UITableViewCell {
-
-    @IBOutlet weak var typeNameLbl: UILabel!
     
-//    var typeName: String!
+    @IBOutlet weak var typeNameLbl: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-    
     }
     
     func configureTypeCell(type: Type) {
         
-        print("in cell configure")
-        print(type.name)
         typeNameLbl.text = type.name
-
-    
     }
 }
