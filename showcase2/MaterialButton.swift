@@ -18,5 +18,8 @@ class MaterialButton: UIButton {
             layer.shadowOpacity = 0.9
             layer.shadowRadius = 4.0
             layer.shadowOffset = CGSizeMake(0.0, 2.0)
+            
+            self.titleLabel?.font = UIFont(name: "Roboto-Black", size: 12)
+    
         }
 }

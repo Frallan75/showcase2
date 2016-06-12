@@ -18,11 +18,11 @@ class Type {
     
     init(typeUid: String, typeDict: Dictionary<String, AnyObject>) {
         
-        if let assetsInType = typeDict["assetsInType"] as? String {
+        if let assetsInType = typeDict[TYPE_ASSETS] as? String {
             self.assetsInType = assetsInType
         }
         
-        if let name = typeDict["name"] as? String {
+        if let name = typeDict[TYPE_NAME] as? String {
             self.name = name
         }
         

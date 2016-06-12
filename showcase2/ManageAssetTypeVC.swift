@@ -8,34 +8,35 @@
 
 import UIKit
 import Firebase
+import Foundation
+
+protocol PickTypeProtocol {
+    func chosenType(type: Type)
+}
 
 class ManageAssetTypeVC: UIViewController {
     
     @IBOutlet weak var newAssetTypeTxtField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     
-    var typenameArray: [Type] = []
+    var typeArray: [Type] = []
+    var delegate: PickTypeProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         tableView.delegate = self
         tableView.dataSource = self
         
-        //LOAD EXISTING TYPES INTO typeArray
         DataService.ds.FB_TYPES_REF.observeEventType(FIRDataEventType.Value, withBlock: { snapshot in
             
-            self.typenameArray = []
+            self.typeArray = []
             
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                
                 for snap in snapshots {
-                    
                     if let typeDict = snap.value as? Dictionary<String, AnyObject> {
-                        
                         let typeToAdd = Type(typeUid: snap.key, typeDict: typeDict)
-                        
-                        self.typenameArray.append(typeToAdd)
+                        self.typeArray.append(typeToAdd)
                     }
                 }
             }
@@ -45,16 +46,23 @@ class ManageAssetTypeVC: UIViewController {
     
     @IBAction func addTypeBtnPressed(sender: UIButton) {
         
-        if let typeName = newAssetTypeTxtField.text where newAssetTypeTxtField.text != "" {
+        if let typeName = newAssetTypeTxtField.text where typeName != "" {
             
             DataService.ds.createNewType(typeName)
-
+            
             self.tableView.reloadData()
+            self.newAssetTypeTxtField.endEditing(true)
+            self.newAssetTypeTxtField.text = ""
             
         } else {
-            //*** Implement aler here!***///
-            print("please fill in data in field!")
+            self.displayAlert("Alert!", error: "Please fill in data in field!")
         }
+    }
+    
+    func displayAlert(title: String, error: String) {
+        let alert = UIAlertController(title: title, message: error, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+        presentViewController(alert, animated: true, completion: nil)
     }
 }
 
@@ -65,21 +73,23 @@ extension ManageAssetTypeVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return typenameArray.count
+        return typeArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let type = typenameArray[indexPath.row]
-        
+        let type = typeArray[indexPath.row]
         if let cell = tableView.dequeueReusableCellWithIdentifier("typeCell") as? TypeCell {
-            
             cell.configureTypeCell(type)
-            
             return cell
         }
-        
         return UITableViewCell()
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        self.delegate?.chosenType(typeArray[indexPath.row])
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
 }

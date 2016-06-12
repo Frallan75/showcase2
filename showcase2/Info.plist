@@ -75,5 +75,11 @@
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Roboto-Black.ttf</string>
+		<string>Roboto-Thin.ttf</string>
+		<string>RobotoCondensed-Light.ttf</string>
+	</array>
 </dict>
 </plist>

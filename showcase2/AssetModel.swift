@@ -12,52 +12,55 @@ import Firebase
 class Asset {
     
     var typeUid: String!
-    var owner: String!
+    var ownerUid: String!
     var make: String!
     var model: String!
-    var estLifeLeft: String!
-    var purchaseDate: NSDate!
+    var estLifeLeft: Int!
+    var purchaseDate: String!
+    var endDate: String!
     var assetImgUrl: String!
-    var assetCode: String!
-    var assetKey: String!
-    var assetRef: FIRDatabaseReference!
+//    var assetCode: String!
+    var assetUid: String!
     
-    init(assetKey: String, assetDict: Dictionary<String, AnyObject>) {
+    init(assetUid: String, assetDict: Dictionary<String, AnyObject>) {
         
-        self.assetKey = assetKey
-        self.assetRef = DataService.ds.FB_ASSETS_REF.child(self.assetKey)
+        self.assetUid = assetUid
         
-        if let typeUid = assetDict["typeUid"] as? String {
+        if let typeUid = assetDict[ASSET_TYPE_UID] as? String {
             self.typeUid = typeUid
         }
         
-        if let owner = assetDict["owner"] as? String {
-            self.owner = owner
+        if let ownerUid = assetDict[ASSET_OWNER_UID] as? String {
+            self.ownerUid = ownerUid
         }
 
-        if let make = assetDict["make"] as? String {
+        if let make = assetDict[ASSET_MAKE] as? String {
             self.make = make
         }
         
-        if let model = assetDict["model"] as? String {
+        if let model = assetDict[ASSET_MODEL] as? String {
             self.model = model
         }
         
-        if let estLifeLeft = assetDict["estLifeLeft"] as? String {
+        if let estLifeLeft = assetDict[ASSET_EST_TIME_END] as? Int {
             self.estLifeLeft = estLifeLeft
         }
         
-        if let purchaseDate = assetDict["purchaseDate"] as? NSDate {
+        if let purchaseDate = assetDict[ASSET_PUR_DATE] as? String {
             self.purchaseDate = purchaseDate
         }
         
-        if let assetImgUrl = assetDict["assetImgUrl"] as? String {
+        if let endDate = assetDict[ASSET_END_DATE] as? String {
+            self.endDate = endDate
+        }
+        
+        if let assetImgUrl = assetDict[ASSET_IMG_URL] as? String {
             self.assetImgUrl = assetImgUrl
         }
         
-        if let assetCode = assetDict["assetCode"] as? String {
-            self.assetCode = assetCode
-        }
+//        if let assetCode = assetDict["assetCode"] as? String {
+//            self.assetCode = assetCode
+//        }
     }
 }
 

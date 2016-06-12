@@ -15,10 +15,11 @@ class Owner {
     var ownerUid: String!
     var email: String!
     var provider: String!
+    var ownerImgUrl: String!
     
-    init(uid: String, ownerDict: Dictionary<String, AnyObject>) {
+    init(ownerUid: String, ownerDict: Dictionary<String, AnyObject>) {
         
-        self.ownerUid = uid
+        self.ownerUid = ownerUid
         
         if let name = ownerDict["name"] as? String {
             self.name = name
@@ -30,6 +31,10 @@ class Owner {
         
         if let provider = ownerDict["provider"] as? String {
             self.provider = provider
-        }  
+        }
+        
+        if let ownerImgUrl = ownerDict["ownerUrl"] as? String {
+            self.ownerImgUrl = ownerImgUrl
+        }
     }
 }

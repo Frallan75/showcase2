@@ -18,34 +18,32 @@ class AssetCell: UITableViewCell {
     @IBOutlet weak var assetNameLbl: UILabel!
     @IBOutlet weak var assetLifeLeftLbl: UILabel!
     @IBOutlet weak var assetStatusView: UIView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
-    //    override func drawRect(rect: CGRect) {
-    //        assetImgView.layer.cornerRadius = assetImgView.frame.width / 2
-    //        assetImgView.clipsToBounds = true
-    //        assetImgView.clipsToBounds = true
-    //    }
+    @IBOutlet weak var ownerNameLbl: UILabel!
     
     func configureAsset(asset: Asset) {
-        
-        print(asset)
         
         DataService.ds.FB_TYPES_REF.child(asset.typeUid).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { snapshot in
             
             if let typeDict = snapshot.value as? Dictionary<String, AnyObject> {
+
+                self.assetTypeNameLbl.text = "\(typeDict["name"]!)"            }
+        })
+        
+        print(asset.ownerUid)
+        
+        DataService.ds.FB_USERS_REF.child(asset.ownerUid).observeSingleEventOfType(FIRDataEventType.Value, withBlock:  { snapshot in
+            
+            if let ownerDict = snapshot.value as? Dictionary<String, AnyObject> {
                 
-                let name = "\(typeDict["name"]!)"
-                self.assetTypeNameLbl.text = name
+                self.ownerNameLbl.text = ("\(ownerDict["name"]!)")
             }
         })
         
         assetNameLbl.text = asset.model
-        assetLifeLeftLbl.text = asset.estLifeLeft
         
-        if let lifeLeftInt = Double(asset.estLifeLeft) {
+        if let lifeLeftInt = asset.estLifeLeft {
+
+            assetLifeLeftLbl.text = "\(asset.estLifeLeft)"
             
             switch lifeLeftInt {
             case 0...4:
@@ -59,6 +57,8 @@ class AssetCell: UITableViewCell {
             default:
                 assetStatusView.backgroundColor = UIColor.blackColor()
             }
+        } else {
+            print("problem converting LifeLeft string to Int")
         }
     }
 }

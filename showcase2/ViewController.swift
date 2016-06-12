@@ -18,32 +18,25 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(DataService.ds.FB_BASE_REF)
     }
     
     override func viewDidAppear(animated: Bool) {
         
-        // **  COMMENT TO UNAPPLY QUICK "ALREADY LOGGED IN WITH NSUserDefaults"
+        // **  COMMENT 3 LINES BELOW TO UNAPPLY QUICK "ALREADY LOGGED IN WITH NSUserDefaults"
         
-        if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
-            self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
-            
-        }
+                if NSUserDefaults.standardUserDefaults().valueForKey(KEY_UID) != nil {
+                    self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                }
         // **
-        
     }
     
     @IBAction func fbBtnPressed(sender: UIButton!) {
         
         let facebookLogin = FBSDKLoginManager()
-        var userToCreate = Dictionary<String, AnyObject>()
         
         facebookLogin.logInWithReadPermissions(["public_profile", "email", "user_friends"], fromViewController: self) { fbLoginResult, fbLoginError in
-            
             if fbLoginError != nil {
-                
-                print("Facebook Error at login \(fbLoginError)")
+                self.displayLoginAlert("\(fbLoginError.userInfo)", error: "Please try again, if error persists, contact the app developer!")
                 
             } else {
                 
@@ -53,20 +46,20 @@ class ViewController: UIViewController {
                 FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
                     
                     if error != nil {
+                        self.displayLoginAlert("Alert!", error: "WE have a sign in with credentials problem")
                         
-                        print("WE have a sign in with credentials problem")
+                    } else if let user = user {
+                        
+                        let userToCreate: Dictionary<String, AnyObject> = ["profileImgUrl" : user.photoURL!.absoluteString,
+                                                                           "provider" : credential.provider,
+                                                                           "email" : user.email!,
+                                                                           "name" : user.displayName!]
+                        
+                        DataService.ds.FB_USERS_REF.child(user.uid).updateChildValues(userToCreate)
+                        self.loginFinalStep(user)
                         
                     } else {
-                        
-                        userToCreate["profileImgUrl"] = user!.photoURL!.absoluteString
-                        userToCreate["provider"] = credential.provider
-                        userToCreate["email"] = user!.email
-                        userToCreate["name"] = user!.displayName
-                        
-                        DataService.ds.createFIRUser(user!.uid, user: userToCreate)
-                        
-                        NSUserDefaults.standardUserDefaults().setValue(user!.uid, forKey: KEY_UID)
-                        self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
+                        self.displayLoginAlert("Alert", error: "There was a problem at login, please contact app developer and procide CODE: 434")
                     }
                 }
             }
@@ -79,119 +72,82 @@ class ViewController: UIViewController {
             
             clearForm(nil)
             
-            FIRAuth.auth()?.signInWithEmail(email, password: pwd, completion: { user, error in
+            FIRAuth.auth()?.signInWithEmail(email, password: pwd) { user, error in
                 
                 if let error = error {
-                    
-                    print("Printing error: \(error.localizedDescription)")
                     
                     if let errorDesc = FIRAuthErrorCode(rawValue: error.code) {
                         
                         switch errorDesc {
                             
+                        case .ErrorCodeNetworkError:
+                            self.displayLoginAlert("Network Alert", error: "No connection to the Internet available, please try again when connectivity is established")
+                        case.ErrorCodeEmailAlreadyInUse:
+                            self.displayLoginAlert("Email already in use!", error: "")
                         case.ErrorCodeInvalidEmail:
                             self.displayLoginAlert("Invalid email format", error: "")
-                            
                         case .ErrorCodeWrongPassword:
-                            self.displayLoginAlert("Wrong password", error: "")
-                            
+                            self.displayLoginAlert("Wrong password", error: "The supplied password was incorrect, pleae try again")
                         case .ErrorCodeUserNotFound:
-                            self.displayCreateNewUserAlert("create user?", msg: "Are you sure you want to create a new user with email: \(email)?", user: email, pwd: pwd)
-                            
+                            self.displayCreateNewUserAlert("create user?", msg: "Are you sure you want to create a new user with email: \(email)?", email: email, pwd: pwd)
                         default:
-                            self.displayLoginAlert("Uknown error", error: "")
+                            self.displayLoginAlert("Uknown error", error: "An unknown error has occurred, please try again!")
                         }
                     }
                     
                 } else if let user = user {
                     
-                    self.createUserDictionaryEmailLogin(user)
+                    self.loginFinalStep(user)
                     
                 } else {
-                    
-                    print("Error in email user creation!")
+                    self.displayLoginAlert("Alert", error: "There was a problem at login, please contact app developer and procide CODE: 434")
                 }
-            })
-            
+            }
         } else {
-            displayLoginAlert("Please enter valid data in fields", error: "You must enter a valid email adress and password in order to login. Please try again!")
+            self.displayLoginAlert("Please enter valid data in fields", error: "You must enter a valid email adress and password in order to login. Please try again!")
         }
+    }
+
+    func displayLoginAlert(title: String, error: String) {
+        
+        let alert = UIAlertController(title: title, message: error, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func displayCreateNewUserAlert(title: String, msg: String, email: String, pwd: String) {
+        
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
+        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {alert in self.createNewUser(email, pwd: pwd)})
+        let discardAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: clearForm)
+        
+        alert.addAction(action)
+        alert.addAction(discardAction)
+        
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     func createNewUser(email: String, pwd: String) {
-        
-        FIRAuth.auth()?.createUserWithEmail(email, password: pwd, completion: { (user: FIRUser?, error:NSError?) in
-            
+    
+        FIRAuth.auth()?.createUserWithEmail(email, password: pwd, completion: { (user, error) in
             if let error = error {
-                
-                if let errorDesc = FIRAuthErrorCode(rawValue: error.code) {
-                    
-                    switch errorDesc {
-                        
-                    case .ErrorCodeInvalidEmail:
-                        self.displayLoginAlert("Login Error!", error: "Invalid Email format")
-                    case .ErrorCodeWeakPassword:
-                        self.displayLoginAlert("Login Error!", error: "Password to weak. Password must be at least 6 characters long")
-                    default:
-                        self.displayLoginAlert("Login Error!", error: "Unknown error at create")
-                    }
-                }
+                self.displayLoginAlert("Alert", error: "\(error.localizedDescription)")
+
             } else if let user = user {
-                
-                self.createUserDictionaryEmailLogin(user)
-                
-            } else {
-                
-                print("Error in email user creation!")
+                self.displayLoginAlert("congrats", error: "user created")
+                self.loginFinalStep(user)
             }
         })
-    }
-    
-    func createUserDictionaryEmailLogin(user: FIRUser) {
-        
-        var userToCreate = Dictionary<String, AnyObject>()
-        
-        userToCreate["provider"] = "email"
-        userToCreate["email"] = user.email
-        
-        DataService.ds.createFIRUser(user.uid, user: userToCreate)
-        
-        self.loginFinalStep(user)
-        
     }
     
     func loginFinalStep(user: FIRUser) {
         
         NSUserDefaults.standardUserDefaults().setValue(user.uid, forKey: KEY_UID)
-        
-        print(FIRAuth.auth()?.currentUser?.email)
-        
         self.performSegueWithIdentifier(SEGUE_LOGGED_IN, sender: nil)
         
     }
     
-    func displayLoginAlert(title: String, error: String) {
-        
-        let alert = UIAlertController(title: title, message: error, preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-        alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    func displayCreateNewUserAlert(title: String, msg: String, user: String, pwd: String) {
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: UIAlertControllerStyle.Alert)
-        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default){ action in
-            self.createNewUser(user, pwd: pwd)
-        }
-        
-        let discardAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: clearForm)
-        alert.addAction(action)
-        alert.addAction(discardAction)
-        presentViewController(alert, animated: true, completion: nil)
-    }
-    
     func clearForm(alert: UIAlertAction?) {
-        
         usernameTxtField.text = ""
         passwordTxtField.text = ""
     }

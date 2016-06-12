@@ -17,18 +17,19 @@ class LoggedInVC: UIViewController {
     @IBOutlet weak var numAssetCurrUserLbl: UILabel!
     
     var user: FIRUser!
-    
-    var asset: Asset!
+    var asset: Asset?
     var assetArray: [Asset] = []
     var assetKey: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         
-        //LOOK FOR ASSETS TO FILL INTO ASSET ARRAY
+        asset = nil
         
         DataService.ds.FB_ASSETS_REF.observeEventType(.Value, withBlock:  { snapshot in
             
@@ -39,9 +40,8 @@ class LoggedInVC: UIViewController {
                 for snap in snapshots {
                     
                     if let assetDict = snap.value as? Dictionary<String, AnyObject> {
-                        
                         let key = snap.key
-                        let asset = Asset(assetKey: key, assetDict: assetDict)
+                        let asset = Asset(assetUid: key, assetDict: assetDict)
                         self.assetArray.append(asset)
                     }
                 }
@@ -49,33 +49,29 @@ class LoggedInVC: UIViewController {
             self.tableView.reloadData()
         })
         
-        //USER INFO
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
             
             if let user = user {
                 
-                self.user = FIRAuth.auth()?.currentUser
+                self.user = user //FIRAuth.auth()?.currentUser
                 
                 if user.displayName == nil {
-                    
                     let changeRequest = user.profileChangeRequest()
-                    
                     changeRequest.displayName = user.email
-                    
-                    changeRequest.commitChangesWithCompletion({ error in
+                    changeRequest.commitChangesWithCompletion { error in
                         
                         if error != nil {
-                            //** Implement alert here ** //
-                            print("Couldn't change user name")
+                            self.displayAlert("Error!", body: "Couldn't change user name")
                         } else {
-                            print("name change success, name is now \(user.displayName)")
+                            self.displayAlert("Username success", body: "Username is now \(user.displayName)")
                         }
-                    })
+                    }
+                    
+                } else if user.displayName != nil {
+                    self.loggedInLbl.text = user.displayName
                 }
-                self.loggedInLbl.text = "\(user.displayName!)"
                 
                 let refCurrUserAssets = DataService.ds.FB_USERS_REF.child(user.uid).child("assets")
-                
                 refCurrUserAssets.observeEventType(FIRDataEventType.Value, withBlock: { snapshot in
                     
                     if snapshot.childrenCount == 0 {
@@ -85,24 +81,27 @@ class LoggedInVC: UIViewController {
                     }
                 })
                 
-                    if self.user.photoURL != nil {
+                if self.user.photoURL != nil {
                     
                     let usrImgUrl = String(self.user.photoURL!)
-                    
-                    DataService.ds.fetchImageFromUrl(usrImgUrl, completion: { image in
+                    DataService.ds.fetchImageFromUrl(usrImgUrl) { image in
                         self.userImgView.image = image
-                    })
+                    }
                     
                 } else {
-                    
                     self.userImgView.image = UIImage(named: "add_user.png")
                 }
-                
             } else {
-                
-                print("no user signed in yet!")
+                self.displayAlert("Login error!", body: "No user signed in!")
             }
         }
+    }
+    
+    func displayAlert (title: String, body: String) {
+        
+        let alert = UIAlertController(title: title, message: body, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     @IBAction func logOutBtnPressed(sender: UIButton!) {
@@ -112,6 +111,12 @@ class LoggedInVC: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == ASSET_MANAGEMENT_VC {
+            let destVC = segue.destinationViewController as! AssetAddVC
+            destVC.asset = self.asset
+        }
+    }
 }
 
 extension LoggedInVC: UITableViewDataSource, UITableViewDelegate {
@@ -127,18 +132,17 @@ extension LoggedInVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let asset = assetArray[indexPath.row]
-        
         if let cell = tableView.dequeueReusableCellWithIdentifier("assetCell") as? AssetCell {
-            
             cell.configureAsset(asset)
-            
             return cell
-            
         }
-        
         return UITableViewCell()
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.asset = assetArray[indexPath.row]
+        performSegueWithIdentifier(ASSET_MANAGEMENT_VC, sender: nil)
+    }
     
     
 }

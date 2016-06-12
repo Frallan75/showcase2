@@ -24,6 +24,5 @@ class MaterialTxtField: UITextField {
     override func editingRectForBounds(bounds: CGRect) -> CGRect {
         return CGRectOffset(bounds, 10, 0)
     }
-    
 }
 

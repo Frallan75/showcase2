@@ -10,12 +10,8 @@ import UIKit
 import Foundation
 
 class TypeCell: UITableViewCell {
-    
+
     @IBOutlet weak var typeNameLbl: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
     
     func configureTypeCell(type: Type) {
         
