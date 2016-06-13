@@ -27,9 +27,6 @@ let OWNERS_VC_SEGUE = "ownersVCsegue"
 let TYPES_VC_SEGUE = "typesVCsegue"
 let MANAGE_TYPE_VC_SEGUE = "manageTypes"
 
-
-
-
 //POSITIONS
 let NAV_BAR_HEIGHT: CGFloat = 65
 
@@ -42,7 +39,11 @@ let ASSET_PUR_DATE = "purchaseDate"
 let ASSET_END_DATE = "endDate"
 let ASSET_IMG_URL = "assetImgUrl"
 let ASSET_EST_TIME_END = "estLifeLeft"
+let ASSET_IMG = "assetUIImage"
 
 //TYPE COMPONENTS
 let TYPE_NAME = "name"
 let TYPE_ASSETS = "assetsInType"
+
+//IMAGE SIZE
+let MAX_ASSET_IMG_SIZE: CGFloat = 250000

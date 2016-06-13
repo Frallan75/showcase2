@@ -22,6 +22,7 @@ class AssetAddVC: UIViewController {
     @IBOutlet weak var makeTFDoneBtn:       MaterialButton!
     @IBOutlet weak var modelTFDoneBtn:      MaterialButton!
     @IBOutlet var displayDatePickerView:    DatePickerViewHolderView!
+    @IBOutlet weak var imagePickerView:     UIImageView!
     
     var chosenTypeUid:  String!
     var chosenOwnerUid: String!
@@ -30,19 +31,24 @@ class AssetAddVC: UIViewController {
     var asset:          Asset!
     var datePickerTag:  Int!
     var dateFormatter = NSDateFormatter()
+    var imagePicker = UIImagePickerController()
+    var imageSelected: Bool!
+    var image: UIImage!
+    
+    static var imageCache = NSCache()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(displayDatePickerView)
-        
         displayDatePickerView.frame = CGRectMake(0, self.view.frame.height, self.view.frame.width, self.view.frame.height)
-        
         displayDatePickerView.delegate = self
         
         dateFormatter.dateFormat = DATE_FORMAT
         
         targetsForTextFields()
+        
+        imagePicker.delegate = self
         
         makeTFDoneBtn.hidden = true
         modelTFDoneBtn.hidden = true
@@ -91,10 +97,6 @@ class AssetAddVC: UIViewController {
         performSegueWithIdentifier(TYPES_VC_SEGUE, sender: nil)
     }
     
-    @IBAction func addImgBtnPressed(sender: UIButton) {
-        
-    }
-    
     @IBAction func selectDateBtnPressed(sender: UIButton) {
         
         if sender.tag == 0 {
@@ -108,23 +110,33 @@ class AssetAddVC: UIViewController {
     
     @IBAction func saveButtonPressed(sender: UIButton!) {
         
-        if let make = makeTF.text where make != "", let model = modelTF.text where model != "" {
+        if let make = makeTF.text where make != "",
+            let model = modelTF.text where model != "",
+            let endLifeDate = endLifeDate where endLifeDate != "",
+            let purDate = purDate where purDate != "",
+            let image = self.image,
+            let chosenOwnerUid = chosenOwnerUid where chosenOwnerUid != "",
+            let chosenTypeUid = chosenTypeUid where chosenTypeUid != "" {
             
             let assetDict = [ASSET_TYPE_UID : chosenTypeUid,
                              ASSET_OWNER_UID : chosenOwnerUid,
-                             ASSET_MAKE : makeTF.text,
-                             ASSET_MODEL : modelTF.text,
+                             ASSET_MAKE : make,
+                             ASSET_MODEL : model,
                              ASSET_END_DATE : endLifeDate,
-                             ASSET_PUR_DATE : purDate,
-                             ASSET_IMG_URL : "http://www.dn.se"]
+                             ASSET_PUR_DATE : purDate]
             
-            if asset != nil {
-                DataService.ds.createNewAsset(assetDict, oldAsset: asset)
+            if self.asset != nil {
+                DataService.ds.createNewAsset(assetDict, oldAsset: self.asset, image: image)
                 self.navigationController?.popViewControllerAnimated(true)
             } else {
-                DataService.ds.createNewAsset(assetDict, oldAsset: nil)
-            self.clearForms()
+                DataService.ds.createNewAsset(assetDict, oldAsset: nil, image: image)
+                self.clearForms()
             }
+            
+            
+            
+            
+            
         } else {
             self.displayAlert("Alert!", body: "Alert, all fields are not filled correctly, please try again!")
         }
@@ -188,8 +200,6 @@ class AssetAddVC: UIViewController {
     }
     
     func displayBottomView(viewToDisplay: UIView) {
-        
-        
         viewToDisplay.hidden = false
         UIView.animateWithDuration(NSTimeInterval.abs(0.7)) {
             super.navigationController?.navigationBar.layer.zPosition =  -1
@@ -260,5 +270,22 @@ extension AssetAddVC: PickOwnerProtocol, PickedTypeProtocol {
         if let chosenTypeUid = type.typeUid {
             self.chosenTypeUid = chosenTypeUid
         }
+    }
+}
+extension AssetAddVC: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        
+        self.image = image
+        imagePicker.dismissViewControllerAnimated(true, completion: nil)
+        self.imagePickerView.image = image
+        imageSelected = true
+        
+    }
+    
+    @IBAction func selectImage(sender: UIButton) {
+        
+        presentViewController(imagePicker, animated: true, completion: nil)
+        
     }
 }
