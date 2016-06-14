@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        IMAGE_CACHE.removeAllObjects()
     }
     
     override func viewDidAppear(animated: Bool) {

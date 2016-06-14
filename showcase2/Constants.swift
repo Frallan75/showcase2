@@ -47,3 +47,6 @@ let TYPE_ASSETS = "assetsInType"
 
 //IMAGE SIZE
 let MAX_ASSET_IMG_SIZE: CGFloat = 250000
+
+//CACHE
+public let IMAGE_CACHE = NSCache()

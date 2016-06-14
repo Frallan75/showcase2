@@ -31,27 +31,23 @@ class AssetAddVC: UIViewController {
     var asset:          Asset!
     var datePickerTag:  Int!
     var dateFormatter = NSDateFormatter()
-    var imagePicker = UIImagePickerController()
-    var imageSelected: Bool!
-    var image: UIImage!
-    
-    static var imageCache = NSCache()
-    
+    var imagePicker =   UIImagePickerController()
+    var imageSelected:  Bool!
+    var image:          UIImage!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(displayDatePickerView)
         displayDatePickerView.frame = CGRectMake(0, self.view.frame.height, self.view.frame.width, self.view.frame.height)
         displayDatePickerView.delegate = self
-        
+
         dateFormatter.dateFormat = DATE_FORMAT
-        
-        targetsForTextFields()
-        
         imagePicker.delegate = self
-        
         makeTFDoneBtn.hidden = true
         modelTFDoneBtn.hidden = true
+        
+        targetsForTextFields()
         
         if asset != nil {
             
@@ -65,7 +61,6 @@ class AssetAddVC: UIViewController {
                 print(snapshot)
                 if let ownerName = snapshot.value as? String {
                     self.ownerLabel.text = ownerName
-                    
                 }
             })
             
@@ -74,6 +69,12 @@ class AssetAddVC: UIViewController {
                     self.typeLbl.text = typeName
                 }
             })
+
+            if let assetImage = IMAGE_CACHE.objectForKey(asset.assetUid) as? UIImage {
+                self.image = assetImage
+                self.imagePickerView.image = assetImage
+            }
+            
             chosenTypeUid = asset.typeUid
             chosenOwnerUid = asset.ownerUid
             purDate = asset.purchaseDate
@@ -86,7 +87,6 @@ class AssetAddVC: UIViewController {
         
         makeTFDoneBtn.hidden = true
         modelTFDoneBtn.hidden = true
-        
     }
     
     @IBAction func pickTypeOwnerBtnPressed(sender: UIButton) {
@@ -108,6 +108,47 @@ class AssetAddVC: UIViewController {
         displayBottomView(displayDatePickerView)
     }
     
+    @IBAction func tfDoneBtnPressed(sender: UIButton) {
+        
+        if sender.tag == 0 {
+            makeTF.endEditing(true)
+            endEditing(makeTF)
+        } else if sender.tag == 1 {
+            modelTF.endEditing(true)
+            endEditing(modelTF)
+        }
+    }
+    
+    @IBAction func selectImage(sender: UIButton) {
+        
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .PhotoLibrary
+        
+        let imageAlert = UIAlertController(title: "Pick image", message: nil, preferredStyle: .ActionSheet)
+        
+        let cameraOption = UIAlertAction(title: "Camera", style: .Default, handler: { (action) in
+            if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)){
+                self.imagePicker.sourceType = .Camera
+                self .presentViewController(self.imagePicker, animated: true, completion: nil)
+            } else {
+                self.displayAlert("Warning!", body: "You don't have a camera!")
+            }
+        })
+        
+        let photoAlbumAction = UIAlertAction(title: "Album", style: .Default, handler: { (action) in
+            self.imagePicker.sourceType = .PhotoLibrary
+            self .presentViewController(self.imagePicker, animated: true, completion: nil)
+        })
+        
+        let cancelImageAlertAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        
+        imageAlert.addAction(cameraOption)
+        imageAlert.addAction(photoAlbumAction)
+        imageAlert.addAction(cancelImageAlertAction)
+        
+        presentViewController(imageAlert, animated: true, completion: nil)
+    }
+
     @IBAction func saveButtonPressed(sender: UIButton!) {
         
         if let make = makeTF.text where make != "",
@@ -126,19 +167,22 @@ class AssetAddVC: UIViewController {
                              ASSET_PUR_DATE : purDate]
             
             if self.asset != nil {
+                print("with old asset")
                 DataService.ds.createNewAsset(assetDict, oldAsset: self.asset, image: image)
-                self.navigationController?.popViewControllerAnimated(true)
+                
+                let alert = UIAlertController(title: "Success!", message: "Your asset was updated successfully!", preferredStyle: .Alert)
+                let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action) in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
+                alert.addAction(okAction)
+                presentViewController(alert, animated: true, completion: nil)
+                
             } else {
                 DataService.ds.createNewAsset(assetDict, oldAsset: nil, image: image)
                 self.clearForms()
             }
-            
-            
-            
-            
-            
         } else {
-            self.displayAlert("Alert!", body: "Alert, all fields are not filled correctly, please try again!")
+            self.displayAlert("Alert!", body: "Please make sure all fields are correctly filled, please try again!")
         }
     }
     
@@ -156,7 +200,6 @@ class AssetAddVC: UIViewController {
         
         makeTF.addTarget(self, action: #selector(AssetAddVC.editing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         modelTF.addTarget(self, action: #selector(AssetAddVC.editing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
-        
     }
     
     func editing(textField: UITextField) {
@@ -164,7 +207,6 @@ class AssetAddVC: UIViewController {
         UIView.animateWithDuration(NSTimeInterval.abs(0.5)) {
             
             if textField == self.makeTF {
-                
                 self.makeTFDoneBtn.hidden = false
                 self.makeTFDoneBtn.userInteractionEnabled = true
             } else if textField == self.modelTF {
@@ -185,17 +227,6 @@ class AssetAddVC: UIViewController {
                 self.modelTFDoneBtn.hidden = true
                 self.modelTFDoneBtn.userInteractionEnabled = false
             }
-        }
-    }
-    
-    @IBAction func tfDoneBtnPressed(sender: UIButton) {
-        
-        if sender.tag == 0 {
-            makeTF.endEditing(true)
-            endEditing(makeTF)
-        } else if sender.tag == 1 {
-            modelTF.endEditing(true)
-            endEditing(modelTF)
         }
     }
     
@@ -227,7 +258,7 @@ class AssetAddVC: UIViewController {
     func displayAlert(title: String, body: String) {
         
         let alert = UIAlertController(title: title, message: body, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Error!", style: .Default, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
         presentViewController(alert, animated: true, completion: nil)
     }
 }
@@ -250,6 +281,7 @@ extension AssetAddVC: DatePickerDelegate {
         dismissBottomView(displayDatePickerView)
     }
 }
+
 extension AssetAddVC: PickOwnerProtocol, PickedTypeProtocol {
     
     func chosenOwmer(chosenOwner: Owner) {
@@ -272,20 +304,13 @@ extension AssetAddVC: PickOwnerProtocol, PickedTypeProtocol {
         }
     }
 }
+
 extension AssetAddVC: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         
         self.image = image
-        imagePicker.dismissViewControllerAnimated(true, completion: nil)
         self.imagePickerView.image = image
-        imageSelected = true
-        
-    }
-    
-    @IBAction func selectImage(sender: UIButton) {
-        
-        presentViewController(imagePicker, animated: true, completion: nil)
-        
+        imagePicker.dismissViewControllerAnimated(true, completion: nil)
     }
 }

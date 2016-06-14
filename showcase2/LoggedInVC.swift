@@ -52,9 +52,7 @@ class LoggedInVC: UIViewController {
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
             
             if let user = user {
-                
-                self.user = user //FIRAuth.auth()?.currentUser
-                
+                self.user = user
                 if user.displayName == nil {
                     let changeRequest = user.profileChangeRequest()
                     changeRequest.displayName = user.email
@@ -143,6 +141,4 @@ extension LoggedInVC: UITableViewDataSource, UITableViewDelegate {
         self.asset = assetArray[indexPath.row]
         performSegueWithIdentifier(ASSET_MANAGEMENT_VC, sender: nil)
     }
-    
-    
 }

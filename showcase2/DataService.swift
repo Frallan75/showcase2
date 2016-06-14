@@ -12,6 +12,8 @@ import Alamofire
 
 let FB_REF = FIRDatabase.database().reference()
 let FB_STORAGE_REF = FIRStorage.storage().referenceForURL("gs://project-6105936688785280588.appspot.com/")
+let imageCache = NSCache()
+
 class DataService {
     
     static let ds = DataService()
@@ -21,8 +23,7 @@ class DataService {
     let FB_USERS_REF = FB_REF.child("users")
     let FB_TYPES_REF = FB_REF.child("types")
     let FB_IMAGES_REF = FB_STORAGE_REF.child("images")
-    
-    static var imageCache = NSCache()
+    let imageCache2 = imageCache
     
     func createNewType(typeName: String) {
         let key = FB_TYPES_REF.childByAutoId().key
@@ -35,8 +36,10 @@ class DataService {
         let newKey: String!
         var assetDictUpdatedWid: Dictionary<NSObject, AnyObject> = [:]
         var childUpdates: Dictionary<NSObject, AnyObject> = [:]
+        
         if let oldKey = oldAsset?.assetUid {
-            
+            print("213123")
+            print(oldKey)
             newKey = oldKey
             
             let childRemoves = ["/types/\(oldAsset!.typeUid)/assets/\(oldKey)",
@@ -55,17 +58,16 @@ class DataService {
         let imgSize = CGFloat(nsdataImg!.length)
         let imageResizeFactor = MAX_ASSET_IMG_SIZE/imgSize
         let imageToStore = UIImageJPEGRepresentation(image, imageResizeFactor)
+    
+        IMAGE_CACHE.setObject(image, forKey: newKey)
         
-        let uploadTask = FB_STORAGE_REF.child("/images/\(newKey)/assetImage.png").putData(imageToStore!, metadata: nil) { metadata, error in
+        FB_STORAGE_REF.child("/images/\(newKey)/assetImage.png").putData(imageToStore!, metadata: nil) { metadata, error in
             
             if (error != nil) {
                 print("\(error?.localizedDescription)")
             } else {
                 let imageUrl = (metadata!.downloadURL()?.path)!
-                print("1")
-                print(imageUrl)
-                AssetAddVC.imageCache.setObject(imageToStore!, forKey: imageUrl)
-            
+                
                 assetDictUpdatedWid = assetDict
                 
                 if let endDateStr = assetDict["endDate"] as? String {
@@ -79,10 +81,10 @@ class DataService {
                 childUpdates = ["/assets/\(newKey)" : assetDictUpdatedWid,
                                 "/types/\(assetDictUpdatedWid[ASSET_TYPE_UID]!)/assets/\(newKey)": newKey,
                                 "/users/\(assetDictUpdatedWid[ASSET_OWNER_UID]!)/assets/\(newKey)" : newKey]
+                
                 FB_REF.updateChildValues(childUpdates)
             }
         }
-        
     }
     
     func storeAssetImage(image: UIImage, assetUid: String) {

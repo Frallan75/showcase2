@@ -329,7 +329,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="assetImgView" destination="AIZ-zm-mXj" id="oGJ-95-D83"/>
+                                            <outlet property="assetImgView" destination="GHz-RO-ak9" id="fci-XX-kLq"/>
                                             <outlet property="assetLifeLeftLbl" destination="C6S-Y0-kgG" id="dCX-BJ-rzW"/>
                                             <outlet property="assetNameLbl" destination="oCV-9F-S72" id="pVx-Ye-nJ9"/>
                                             <outlet property="assetStatusView" destination="aaB-oP-eDw" id="TWp-Mu-gyO"/>
