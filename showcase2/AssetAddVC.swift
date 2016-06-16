@@ -24,6 +24,8 @@ class AssetAddVC: UIViewController {
     @IBOutlet var displayDatePickerView:    DatePickerViewHolderView!
     @IBOutlet weak var imagePickerView:     UIImageView!
     
+    var assetTypeName:  String!
+    var assetOwnerName: String!
     var chosenTypeUid:  String!
     var chosenOwnerUid: String!
     var purDate:        String!
@@ -34,20 +36,22 @@ class AssetAddVC: UIViewController {
     var imagePicker =   UIImagePickerController()
     var imageSelected:  Bool!
     var image:          UIImage!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(displayDatePickerView)
         displayDatePickerView.frame = CGRectMake(0, self.view.frame.height, self.view.frame.width, self.view.frame.height)
         displayDatePickerView.delegate = self
-
+        
         dateFormatter.dateFormat = DATE_FORMAT
+        
         imagePicker.delegate = self
         makeTFDoneBtn.hidden = true
         modelTFDoneBtn.hidden = true
         
-        targetsForTextFields()
+        makeTF.addTarget(self, action: #selector(AssetAddVC.editing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
+        modelTF.addTarget(self, action: #selector(AssetAddVC.editing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
         
         if asset != nil {
             
@@ -61,15 +65,17 @@ class AssetAddVC: UIViewController {
                 print(snapshot)
                 if let ownerName = snapshot.value as? String {
                     self.ownerLabel.text = ownerName
+                    self.assetOwnerName = ownerName
                 }
             })
             
             DataService.ds.FB_TYPES_REF.child(asset.typeUid).child("name").observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) in
                 if let typeName = snapshot.value as? String {
                     self.typeLbl.text = typeName
+                    self.assetTypeName = typeName
                 }
             })
-
+            
             if let assetImage = IMAGE_CACHE.objectForKey(asset.assetUid) as? UIImage {
                 self.image = assetImage
                 self.imagePickerView.image = assetImage
@@ -148,7 +154,7 @@ class AssetAddVC: UIViewController {
         
         presentViewController(imageAlert, animated: true, completion: nil)
     }
-
+    
     @IBAction func saveButtonPressed(sender: UIButton!) {
         
         if let make = makeTF.text where make != "",
@@ -157,14 +163,18 @@ class AssetAddVC: UIViewController {
             let purDate = purDate where purDate != "",
             let image = self.image,
             let chosenOwnerUid = chosenOwnerUid where chosenOwnerUid != "",
-            let chosenTypeUid = chosenTypeUid where chosenTypeUid != "" {
+            let chosenTypeUid = chosenTypeUid where chosenTypeUid != "",
+            let assetOwnerName = self.ownerLabel.text where assetOwnerName != "",
+            let assetTypeName = self.typeLbl.text where assetTypeName != "" {
             
             let assetDict = [ASSET_TYPE_UID : chosenTypeUid,
                              ASSET_OWNER_UID : chosenOwnerUid,
-                             ASSET_MAKE : make,
-                             ASSET_MODEL : model,
+                             ASSET_MAKE : make.lowercaseString,
+                             ASSET_MODEL : model.lowercaseString,
                              ASSET_END_DATE : endLifeDate,
-                             ASSET_PUR_DATE : purDate]
+                             ASSET_PUR_DATE : purDate,
+                             ASSET_OWNER_NAME: assetOwnerName.lowercaseString,
+                             ASSET_TYPE_NAME: assetTypeName.lowercaseString]
             
             if self.asset != nil {
                 print("with old asset")
@@ -194,12 +204,6 @@ class AssetAddVC: UIViewController {
             let destVC = segue.destinationViewController as! TypesVC
             destVC.delegate = self
         }
-    }
-    
-    func targetsForTextFields() {
-        
-        makeTF.addTarget(self, action: #selector(AssetAddVC.editing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
-        modelTF.addTarget(self, action: #selector(AssetAddVC.editing(_:)), forControlEvents: UIControlEvents.EditingDidBegin)
     }
     
     func editing(textField: UITextField) {

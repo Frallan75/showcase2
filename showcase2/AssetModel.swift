@@ -9,7 +9,7 @@
 import Foundation
 import Firebase
 
-class Asset {
+class Asset: NSObject {
     
     var typeUid: String!
     var ownerUid: String!
@@ -19,6 +19,8 @@ class Asset {
     var purchaseDate: String!
     var endDate: String!
     var assetImgUrl: String!
+    var assetOwnerName: String!
+    var assetTypeName: String!
 //    var assetCode: String!
     var assetUid: String!
     
@@ -58,9 +60,31 @@ class Asset {
             self.assetImgUrl = assetImgUrl
         }
         
+        if let assetOwnerName = assetDict["assetOwnerName"] as? String {
+            self.assetOwnerName = assetOwnerName
+        }
+        
+        if let assetTypeName = assetDict["assetTypeName"] as? String {
+            self.assetTypeName = assetTypeName
+        }
+        
 //        if let assetCode = assetDict["assetCode"] as? String {
 //            self.assetCode = assetCode
 //        }
     }
+    
+    override var hash: Int {
+        return assetUid.hashValue
+    }
+    
+    override func isEqual(object: AnyObject?) -> Bool {
+        guard let rhs = object as? Asset else {
+            return false
+        }
+        let lhs = self
+        
+        return lhs.assetUid == rhs.assetUid
+    }
+
 }
 

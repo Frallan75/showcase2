@@ -12,6 +12,7 @@
 		BA0458611D01159A00112ABC /* AssetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0458601D01159A00112ABC /* AssetModel.swift */; };
 		BA1A54A61D053CCE0066EF59 /* DatePickerViewHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1A54A51D053CCE0066EF59 /* DatePickerViewHolderView.swift */; };
 		BA1DC4C11D068DBA006CAFBB /* OwnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1DC4C01D068DBA006CAFBB /* OwnerCell.swift */; };
+		BA72298D1D11F62100FC11ED /* TopUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA72298C1D11F62100FC11ED /* TopUserView.swift */; };
 		BA8EB6FB1D015F6C00D60807 /* AssetAddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB6FA1D015F6C00D60807 /* AssetAddVC.swift */; };
 		BA8EB7011D0232D300D60807 /* ManageAssetTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB7001D0232D300D60807 /* ManageAssetTypeVC.swift */; };
 		BA8EB7031D02370800D60807 /* TypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8EB7021D02370800D60807 /* TypeCell.swift */; };
@@ -63,6 +64,7 @@
 		BA0458601D01159A00112ABC /* AssetModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetModel.swift; sourceTree = "<group>"; };
 		BA1A54A51D053CCE0066EF59 /* DatePickerViewHolderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewHolderView.swift; sourceTree = "<group>"; };
 		BA1DC4C01D068DBA006CAFBB /* OwnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnerCell.swift; sourceTree = "<group>"; };
+		BA72298C1D11F62100FC11ED /* TopUserView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopUserView.swift; sourceTree = "<group>"; };
 		BA8EB6FA1D015F6C00D60807 /* AssetAddVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetAddVC.swift; sourceTree = "<group>"; };
 		BA8EB7001D0232D300D60807 /* ManageAssetTypeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageAssetTypeVC.swift; sourceTree = "<group>"; };
 		BA8EB7021D02370800D60807 /* TypeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeCell.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				BA8EB7021D02370800D60807 /* TypeCell.swift */,
 				BA1DC4C01D068DBA006CAFBB /* OwnerCell.swift */,
 				BA1A54A51D053CCE0066EF59 /* DatePickerViewHolderView.swift */,
+				BA72298C1D11F62100FC11ED /* TopUserView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				BAB0B1B91CFF903600DB7757 /* DataService.swift in Sources */,
 				BA8EB70B1D03F40A00D60807 /* OwnerModel.swift in Sources */,
 				BAB0B1C41CFFD51900DB7757 /* MaterialTxtField.swift in Sources */,
+				BA72298D1D11F62100FC11ED /* TopUserView.swift in Sources */,
 				BA04585E1D01141300112ABC /* AssetCell.swift in Sources */,
 				BA930A1E1D0B6C4A00032295 /* OwnersVC.swift in Sources */,
 				BA8EB7011D0232D300D60807 /* ManageAssetTypeVC.swift in Sources */,

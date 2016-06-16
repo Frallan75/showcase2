@@ -55,7 +55,7 @@ class ViewController: UIViewController {
                         let userToCreate: Dictionary<String, AnyObject> = ["profileImgUrl" : user.photoURL!.absoluteString,
                                                                            "provider" : credential.provider,
                                                                            "email" : user.email!,
-                                                                           "name" : user.displayName!]
+                                                                           "name" : user.displayName!.lowercaseString]
                         
                         DataService.ds.FB_USERS_REF.child(user.uid).updateChildValues(userToCreate)
                         self.loginFinalStep(user)

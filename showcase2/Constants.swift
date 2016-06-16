@@ -40,13 +40,16 @@ let ASSET_END_DATE = "endDate"
 let ASSET_IMG_URL = "assetImgUrl"
 let ASSET_EST_TIME_END = "estLifeLeft"
 let ASSET_IMG = "assetUIImage"
+let ASSET_OWNER_NAME = "assetOwnerName"
+let ASSET_TYPE_NAME = "assetTypeName"
 
 //TYPE COMPONENTS
 let TYPE_NAME = "name"
 let TYPE_ASSETS = "assetsInType"
 
 //IMAGE SIZE
-let MAX_ASSET_IMG_SIZE: CGFloat = 250000
+let MAX_ASSET_IMG_SIZE: CGFloat = 100000
 
 //CACHE
 public let IMAGE_CACHE = NSCache()
+

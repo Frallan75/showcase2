@@ -27,11 +27,13 @@ class DataService {
     
     func createNewType(typeName: String) {
         let key = FB_TYPES_REF.childByAutoId().key
-        let typeDict = ["name" : typeName]
+        let typeDict = ["name" : typeName.lowercaseString]
         FB_TYPES_REF.child(key).updateChildValues(typeDict)
     }
     
     func createNewAsset(assetDict: Dictionary<String, AnyObject>, oldAsset: Asset?, image: UIImage) {
+        
+        print("\(assetDict[ASSET_OWNER_NAME])")
         
         let newKey: String!
         var assetDictUpdatedWid: Dictionary<NSObject, AnyObject> = [:]
@@ -87,19 +89,36 @@ class DataService {
         }
     }
     
-    func storeAssetImage(image: UIImage, assetUid: String) {
-        
-        
-    }
+//    func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
+//        
+//        let defaultSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+//        let dataTask: NSURLSessionDataTask?
+//        
+//        if let nsUrl = NSURL(string: url) {
+//            print(nsUrl)
+//            
+//            dataTask = defaultSession.dataTaskWithURL(nsUrl) { data, response, error in
+//                print("in session")
+//                if let error = error {
+//                    print(error.localizedDescription)
+//                }
+//                
+//                print("in image")
+//                let image = UIImage(data: data!)
+//                completion(image: image!)
+//            }
+//        dataTask!.resume()
+//        }
+//        
+//    }
     
     func fetchImageFromUrl(url: String, completion: (image: UIImage) -> ()) {
         
-        Alamofire.request(.GET, url).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error -> Void in
+        let fetchImageTask = Alamofire.request(.GET, url).validate(contentType: ["image/*"]).response(completionHandler: { request, response, data, error -> Void in
             let fetchedImage: UIImage!
             
             if error == nil {
                 fetchedImage = UIImage(data: data!)!
-                
             } else {
                 fetchedImage = UIImage(named: "add_user.png")
             }

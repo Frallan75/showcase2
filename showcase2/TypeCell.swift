@@ -15,6 +15,6 @@ class TypeCell: UITableViewCell {
     
     func configureTypeCell(type: Type) {
         
-        typeNameLbl.text = type.name
+        typeNameLbl.text = type.name.capitalizedString
     }
 }

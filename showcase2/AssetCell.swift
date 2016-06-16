@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 import Firebase
 import Alamofire
+import AlamofireImage
 
 class AssetCell: UITableViewCell {
     
@@ -21,44 +22,48 @@ class AssetCell: UITableViewCell {
     @IBOutlet weak var ownerNameLbl: UILabel!
     
     let imageCache = NSCache()
-    
-    func configureAsset(asset: Asset) {
+    var downloadImageTask: FIRStorageDownloadTask?
+    func configureAsset(asset: Asset, img: UIImage?) {
+        
+        assetNameLbl.text = asset.model.capitalizedString
         
         DataService.ds.FB_TYPES_REF.child(asset.typeUid).observeSingleEventOfType(FIRDataEventType.Value, withBlock: { snapshot in
             
             if let typeDict = snapshot.value as? Dictionary<String, AnyObject> {
 
-                self.assetTypeNameLbl.text = "\(typeDict["name"]!)"            }
+                self.assetTypeNameLbl.text = "\(typeDict["name"]!)".capitalizedString
+            }
         })
         
         DataService.ds.FB_USERS_REF.child(asset.ownerUid).observeSingleEventOfType(FIRDataEventType.Value, withBlock:  { snapshot in
             
             if let ownerDict = snapshot.value as? Dictionary<String, AnyObject> {
                 
-                self.ownerNameLbl.text = ("\(ownerDict["name"]!)")
+                self.ownerNameLbl.text = ("\(ownerDict["name"]!)").capitalizedString
             }
         })
-        
-        if let assetImage = IMAGE_CACHE.objectForKey(asset.assetUid) as? UIImage {
-            print("In cache")
-            self.assetImgView.image = assetImage
-            
-        } else {
-        
-            FB_STORAGE_REF.child("images/\(asset.assetUid)/assetImage.png").dataWithMaxSize((1*1024*1024), completion: { (data, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else if let data = data {
-                    print("in fetching image")
-                    if let image = UIImage(data: data) {
-                        self.assetImgView.image = image
-                        IMAGE_CACHE.setObject(image, forKey: asset.assetUid)
+
+        if asset.assetImgUrl != nil {
+            if img != nil {
+                self.assetImgView.image = img
+            } else {
+                
+                downloadImageTask = FB_STORAGE_REF.child("images/\(asset.assetUid)/assetImage.png").dataWithMaxSize(1*1024*1024, completion: { data, error in
+                    
+                    if let error = error {
+                        print(error.localizedDescription)
+                        
+                    } else if let data = data {
+                        if let image = UIImage(data: data) {
+                            self.assetImgView.image = image
+                            IMAGE_CACHE.setObject(image, forKey: asset.assetUid)
+                        }
                     }
-                }
-            })
+                })
+            }
+        } else {
+            self.assetImgView.hidden = true
         }
-    
-        assetNameLbl.text = asset.model
         
         if let lifeLeftInt = asset.estLifeLeft {
 
